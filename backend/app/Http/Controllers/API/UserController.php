@@ -19,13 +19,22 @@ class UserController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8',
             'role_id' => 'required|exists:roles,id',
         ]);
 
-        $validated['password'] = Hash::make($validated['password']);
+        $user = User::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => Hash::make(\Illuminate\Support\Str::random(16)),
+            'role_id' => $validated['role_id'],
+            'invitation_token' => \Illuminate\Support\Str::random(40),
+            'invited_at' => now(),
+            'is_active' => false,
+        ]);
 
-        return User::create($validated)->load('role');
+        // In a real app, send mail here: Mail::to($user->email)->send(new UserInvitation($user));
+
+        return $user->load('role');
     }
 
     public function show(User $user)

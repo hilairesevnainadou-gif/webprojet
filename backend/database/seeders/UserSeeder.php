@@ -24,6 +24,7 @@ class UserSeeder extends Seeder
             'email' => 'admin@novatech.com',
             'password' => Hash::make('password'),
             'role_id' => $adminRole->id,
+            'is_active' => true,
         ]);
 
         // Dev user
@@ -32,6 +33,7 @@ class UserSeeder extends Seeder
             'email' => 'dev@novatech.com',
             'password' => Hash::make('password'),
             'role_id' => $devRole->id,
+            'is_active' => true,
         ]);
 
         // Client user
@@ -40,6 +42,7 @@ class UserSeeder extends Seeder
             'email' => 'client@novatech.com',
             'password' => Hash::make('password'),
             'role_id' => $clientRole->id,
+            'is_active' => true,
         ]);
     }
 }

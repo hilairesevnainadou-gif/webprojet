@@ -20,6 +20,7 @@ class ProjetSeeder extends Seeder
             'dev_id' => $dev->id,
             'link' => 'https://github.com',
             'image' => 'https://images.unsplash.com/photo-1557821552-17105176677c?auto=format&fit=crop&q=80&w=800',
+            'is_validated' => true,
         ]);
     }
 }

@@ -16,6 +16,7 @@ class ProduitSeeder extends Seeder
             'description_en' => 'A complete template to launch your SaaS application in a few hours.',
             'price' => 35000,
             'image' => 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800',
+            'is_validated' => true,
         ]);
     }
 }

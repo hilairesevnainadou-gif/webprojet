@@ -10,7 +10,11 @@ class ServiceController extends Controller
 {
     public function index()
     {
-        return Service::all();
+        $query = Service::query();
+        if (!auth('sanctum')->check() || !auth('sanctum')->user()->hasRole('admin')) {
+            $query->where('is_validated', true);
+        }
+        return $query->get();
     }
 
     public function store(Request $request)
@@ -51,5 +55,11 @@ class ServiceController extends Controller
     {
         $service->delete();
         return response()->noContent();
+    }
+
+    public function validateContent(Service $service)
+    {
+        $service->update(['is_validated' => true]);
+        return $service;
     }
 }

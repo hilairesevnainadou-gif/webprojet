@@ -10,7 +10,11 @@ class BlogController extends Controller
 {
     public function index()
     {
-        return Blog::with('author')->latest()->get();
+        $query = Blog::with('author');
+        if (!auth('sanctum')->check() || (!auth('sanctum')->user()->hasRole('admin') && !auth('sanctum')->user()->hasRole('dev'))) {
+            $query->where('is_validated', true);
+        }
+        return $query->latest()->get();
     }
 
     public function store(Request $request)
@@ -53,5 +57,11 @@ class BlogController extends Controller
     {
         $blog->delete();
         return response()->noContent();
+    }
+
+    public function validateContent(Blog $blog)
+    {
+        $blog->update(['is_validated' => true]);
+        return $blog;
     }
 }

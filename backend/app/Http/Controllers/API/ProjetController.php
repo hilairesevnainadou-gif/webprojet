@@ -10,7 +10,11 @@ class ProjetController extends Controller
 {
     public function index()
     {
-        return Projet::with('developer')->latest()->get();
+        $query = Projet::with('developer');
+        if (!auth('sanctum')->check() || (!auth('sanctum')->user()->hasRole('admin') && !auth('sanctum')->user()->hasRole('dev'))) {
+            $query->where('is_validated', true);
+        }
+        return $query->latest()->get();
     }
 
     public function store(Request $request)
@@ -53,5 +57,11 @@ class ProjetController extends Controller
     {
         $projet->delete();
         return response()->noContent();
+    }
+
+    public function validateContent(Projet $projet)
+    {
+        $projet->update(['is_validated' => true]);
+        return $projet;
     }
 }

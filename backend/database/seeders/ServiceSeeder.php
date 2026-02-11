@@ -16,6 +16,7 @@ class ServiceSeeder extends Seeder
             'description_en' => 'Creating modern and high-performance websites with React and Laravel.',
             'price' => 1500000,
             'category' => 'Développement',
+            'is_validated' => true,
         ]);
         Service::create([
             'name' => 'Design UI/UX',
@@ -24,6 +25,7 @@ class ServiceSeeder extends Seeder
             'description_en' => 'Designing intuitive and aesthetic user interfaces.',
             'price' => 800000,
             'category' => 'Design',
+            'is_validated' => true,
         ]);
     }
 }

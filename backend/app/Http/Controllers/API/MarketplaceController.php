@@ -10,7 +10,11 @@ class MarketplaceController extends Controller
 {
     public function index()
     {
-        return Produit::all();
+        $query = Produit::query();
+        if (!auth('sanctum')->check() || !auth('sanctum')->user()->hasRole('admin')) {
+            $query->where('is_validated', true);
+        }
+        return $query->get();
     }
 
     public function store(Request $request)
@@ -51,5 +55,11 @@ class MarketplaceController extends Controller
     {
         $marketplace->delete();
         return response()->noContent();
+    }
+
+    public function validateContent(Produit $marketplace)
+    {
+        $marketplace->update(['is_validated' => true]);
+        return $marketplace;
     }
 }

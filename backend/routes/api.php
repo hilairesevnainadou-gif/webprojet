@@ -10,6 +10,8 @@ use App\Http\Controllers\API\SettingController;
 use App\Http\Controllers\API\RoleController;
 use App\Http\Controllers\API\PermissionController;
 use App\Http\Controllers\API\UserController;
+use App\Http\Controllers\API\TaskController;
+use App\Http\Controllers\API\ProfileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/settings', [SettingController::class, 'index']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
+Route::post('/activate', [AuthController::class, 'activate']);
 
 Route::get('/services', [ServiceController::class, 'index']);
 Route::get('/services/{service}', [ServiceController::class, 'show']);
@@ -36,10 +39,15 @@ Route::get('/marketplace/{marketplace}', [MarketplaceController::class, 'show'])
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/me', [AuthController::class, 'me']);
+    Route::put('/profile', [ProfileController::class, 'update']);
 
     // Admin Only
     Route::middleware('role:admin')->group(function () {
         Route::post('/settings', [SettingController::class, 'update']);
+        Route::post('/services/{service}/validate', [ServiceController::class, 'validateContent']);
+        Route::post('/blog/{blog}/validate', [BlogController::class, 'validateContent']);
+        Route::post('/projets/{projet}/validate', [ProjetController::class, 'validateContent']);
+        Route::post('/marketplace/{marketplace}/validate', [MarketplaceController::class, 'validateContent']);
         Route::apiResource('users', UserController::class);
         Route::apiResource('roles', RoleController::class);
         Route::apiResource('permissions', PermissionController::class);
@@ -52,5 +60,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('role:admin,dev')->group(function () {
         Route::apiResource('blog', BlogController::class)->except(['index', 'show']);
         Route::apiResource('projets', ProjetController::class)->except(['index', 'show']);
+        Route::apiResource('tasks', TaskController::class);
     });
 });

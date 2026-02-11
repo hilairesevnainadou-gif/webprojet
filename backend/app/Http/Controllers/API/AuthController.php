@@ -26,6 +26,13 @@ class AuthController extends Controller
             ]);
         }
 
+        if (!$user->is_active && $user->role_id != 1) { // Allow admin even if not active? No, let's keep it strict or allow initial admin.
+             // Actually, the initial admin should be active.
+             throw ValidationException::withMessages([
+                'email' => ['Votre compte n\'est pas encore activé. Veuillez vérifier vos emails.'],
+            ]);
+        }
+
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
@@ -45,6 +52,24 @@ class AuthController extends Controller
     public function me(Request $request)
     {
         return response()->json($request->user()->load('role'));
+    }
+
+    public function activate(Request $request)
+    {
+        $request->validate([
+            'token' => 'required',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        $user = User::where('invitation_token', $request->token)->firstOrFail();
+
+        $user->update([
+            'password' => Hash::make($request->password),
+            'invitation_token' => null,
+            'is_active' => true,
+        ]);
+
+        return response()->json(['message' => 'Compte activé avec succès.']);
     }
 
     public function register(Request $request)

@@ -9,9 +9,10 @@ import Blog from "./pages/Blog";
 import Projets from "./pages/Projets";
 import Marketplace from "./pages/Marketplace";
 import Login from "./pages/Login";
+import Profile from "./pages/Profile";
+import ActivateAccount from "./pages/ActivateAccount";
 import ProtectedRoute from "./components/ProtectedRoute";
 
-// Backoffice placeholders (to be implemented in next step)
 import Dashboard from "./pages/Backoffice/Dashboard";
 
 function App() {
@@ -30,6 +31,16 @@ function App() {
               <Route path="/projets" element={<Projets />} />
               <Route path="/marketplace" element={<Marketplace />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/activate" element={<ActivateAccount />} />
+
+              <Route
+                path="/profile"
+                element={
+                  <ProtectedRoute>
+                    <Profile />
+                  </ProtectedRoute>
+                }
+              />
 
               {/* Protected Backoffice Routes */}
               <Route
