@@ -1,11 +1,18 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { LogIn, LogOut, LayoutDashboard, Menu, X } from "lucide-react";
+import { LogIn, LogOut, LayoutDashboard, Menu, X, Languages } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { useState } from "react";
 
 const Navbar = () => {
   const { user, settings, logout, hasRole } = useAuth();
+  const { t, i18n } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
+
+  const toggleLanguage = () => {
+    const newLang = i18n.language === 'fr' ? 'en' : 'fr';
+    i18n.changeLanguage(newLang);
+  };
 
   return (
     <nav className="bg-slate-900 text-white shadow-lg">
@@ -17,15 +24,18 @@ const Navbar = () => {
               {settings.site_name}
             </Link>
             <div className="hidden md:block ml-10 flex items-baseline space-x-4">
-              <Link to="/services" className="px-3 py-2 rounded-md hover:bg-slate-700">Services</Link>
-              <Link to="/devis" className="px-3 py-2 rounded-md hover:bg-slate-700">Devis</Link>
-              <Link to="/blog" className="px-3 py-2 rounded-md hover:bg-slate-700">Blog</Link>
-              <Link to="/projets" className="px-3 py-2 rounded-md hover:bg-slate-700">Projets</Link>
-              <Link to="/marketplace" className="px-3 py-2 rounded-md hover:bg-slate-700">Marketplace</Link>
+              <Link to="/services" className="px-3 py-2 rounded-md hover:bg-slate-700">{t('services')}</Link>
+              <Link to="/devis" className="px-3 py-2 rounded-md hover:bg-slate-700">{t('devis')}</Link>
+              <Link to="/blog" className="px-3 py-2 rounded-md hover:bg-slate-700">{t('blog')}</Link>
+              <Link to="/projets" className="px-3 py-2 rounded-md hover:bg-slate-700">{t('projets')}</Link>
+              <Link to="/marketplace" className="px-3 py-2 rounded-md hover:bg-slate-700">{t('marketplace')}</Link>
             </div>
           </div>
           <div className="hidden md:block">
             <div className="ml-4 flex items-center md:ml-6 space-x-4">
+              <button onClick={toggleLanguage} className="p-2 hover:bg-slate-700 rounded-full flex items-center gap-1 uppercase text-sm font-bold">
+                <Languages size={18} /> {i18n.language}
+              </button>
               {user ? (
                 <>
                   {hasRole(['admin', 'dev']) && (

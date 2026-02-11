@@ -9,6 +9,7 @@ use App\Http\Controllers\API\MarketplaceController;
 use App\Http\Controllers\API\SettingController;
 use App\Http\Controllers\API\RoleController;
 use App\Http\Controllers\API\PermissionController;
+use App\Http\Controllers\API\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -39,6 +40,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Admin Only
     Route::middleware('role:admin')->group(function () {
         Route::post('/settings', [SettingController::class, 'update']);
+        Route::apiResource('users', UserController::class);
         Route::apiResource('roles', RoleController::class);
         Route::apiResource('permissions', PermissionController::class);
         Route::apiResource('services', ServiceController::class)->except(['index', 'show']);
