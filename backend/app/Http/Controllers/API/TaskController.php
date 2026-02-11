@@ -35,6 +35,13 @@ class TaskController extends Controller
             'due_date' => 'nullable|date',
         ]);
 
+        $project = \App\Models\Projet::findOrFail($validated['projet_id']);
+
+        // Only chef projet or admin can assign tasks
+        if (auth()->id() !== $project->chef_projet_id && !auth()->user()->hasRole('admin')) {
+            return response()->json(['message' => 'Seul le chef de projet peut assigner des tâches.'], 403);
+        }
+
         return Task::create($validated)->load(['project', 'assignee']);
     }
 

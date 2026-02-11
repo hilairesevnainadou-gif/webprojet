@@ -4,14 +4,22 @@ import { Plus, Trash2, Edit } from "lucide-react";
 
 const GestionProjets = () => {
   const [projets, setProjets] = useState([]);
+  const [users, setUsers] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [formData, setFormData] = useState({ title: "", description: "", link: "", image: "" });
+  const [formData, setFormData] = useState({
+    title: "", title_en: "",
+    description: "", description_en: "",
+    link: "", image: "",
+    chef_projet_id: "", is_public: false
+  });
   const [editingId, setEditingId] = useState(null);
 
   const fetchProjets = () => api.get("/projets").then(res => setProjets(res.data));
+  const fetchUsers = () => api.get("/users").then(res => setUsers(res.data));
 
   useEffect(() => {
     fetchProjets();
+    fetchUsers();
   }, []);
 
   const handleSubmit = async (e) => {
@@ -22,7 +30,12 @@ const GestionProjets = () => {
       await api.post("/projets", formData);
     }
     setShowModal(false);
-    setFormData({ title: "", description: "", link: "", image: "" });
+    setFormData({
+      title: "", title_en: "",
+      description: "", description_en: "",
+      link: "", image: "",
+      chef_projet_id: "", is_public: false
+    });
     setEditingId(null);
     fetchProjets();
   };
@@ -55,6 +68,8 @@ const GestionProjets = () => {
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Titre</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Dév</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Chef Projet</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Visibilité</th>
               <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Actions</th>
             </tr>
           </thead>
@@ -63,6 +78,12 @@ const GestionProjets = () => {
               <tr key={p.id}>
                 <td className="px-6 py-4">{p.title}</td>
                 <td className="px-6 py-4">{p.developer?.name}</td>
+                <td className="px-6 py-4">{p.chef_projet?.name || 'N/A'}</td>
+                <td className="px-6 py-4">
+                  <span className={`px-2 py-1 rounded text-xs ${p.is_public ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
+                    {p.is_public ? 'Public' : 'Privé'}
+                  </span>
+                </td>
                 <td className="px-6 py-4 text-right space-x-2">
                   <button onClick={() => handleEdit(p)} className="text-blue-600"><Edit size={18} /></button>
                   <button onClick={() => handleDelete(p.id)} className="text-red-600"><Trash2 size={18} /></button>
@@ -78,8 +99,18 @@ const GestionProjets = () => {
           <div className="bg-white rounded-lg p-6 max-w-md w-full">
             <h3 className="text-lg font-bold mb-4">{editingId ? "Modifier" : "Ajouter"} un Projet</h3>
             <form onSubmit={handleSubmit} className="space-y-4">
-              <input type="text" placeholder="Titre" required className="w-full border p-2 rounded" value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} />
-              <textarea placeholder="Description" required className="w-full border p-2 rounded" value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})} />
+              <input type="text" placeholder="Titre (FR)" required className="w-full border p-2 rounded" value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} />
+              <input type="text" placeholder="Titre (EN)" className="w-full border p-2 rounded" value={formData.title_en} onChange={e => setFormData({...formData, title_en: e.target.value})} />
+              <textarea placeholder="Description (FR)" required className="w-full border p-2 rounded" value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})} />
+              <textarea placeholder="Description (EN)" className="w-full border p-2 rounded" value={formData.description_en} onChange={e => setFormData({...formData, description_en: e.target.value})} />
+              <select required className="w-full border p-2 rounded" value={formData.chef_projet_id} onChange={e => setFormData({...formData, chef_projet_id: e.target.value})}>
+                <option value="">Sélectionner un Chef de Projet</option>
+                {users.map(u => <option key={u.id} value={u.id}>{u.name}</option>)}
+              </select>
+              <div className="flex items-center gap-2">
+                 <input type="checkbox" id="is_public" checked={formData.is_public} onChange={e => setFormData({...formData, is_public: e.target.checked})} />
+                 <label htmlFor="is_public">Rendre le projet public (visible sur le site)</label>
+              </div>
               <input type="url" placeholder="Lien (URL)" className="w-full border p-2 rounded" value={formData.link} onChange={e => setFormData({...formData, link: e.target.value})} />
               <input type="text" placeholder="URL Image" className="w-full border p-2 rounded" value={formData.image} onChange={e => setFormData({...formData, image: e.target.value})} />
               <div className="flex justify-end space-x-2">

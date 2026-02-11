@@ -6,10 +6,24 @@ use Illuminate\Database\Eloquent\Model;
 
 class Projet extends Model
 {
-    protected $fillable = ['title', 'title_en', 'description', 'description_en', 'dev_id', 'link', 'image', 'is_validated'];
+    protected $fillable = [
+        'title', 'title_en', 'description', 'description_en',
+        'dev_id', 'chef_projet_id', 'link', 'image',
+        'is_validated', 'is_public'
+    ];
 
     public function developer()
     {
         return $this->belongsTo(User::class, 'dev_id');
+    }
+
+    public function chefProjet()
+    {
+        return $this->belongsTo(User::class, 'chef_projet_id');
+    }
+
+    public function tasks()
+    {
+        return $this->hasMany(Task::class);
     }
 }

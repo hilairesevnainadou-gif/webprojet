@@ -10,10 +10,13 @@ class ProjetController extends Controller
 {
     public function index()
     {
-        $query = Projet::with('developer');
+        $query = Projet::with(['developer', 'chefProjet']);
+
+        // Non-auth users or non-staff only see validated AND public projects
         if (!auth('sanctum')->check() || (!auth('sanctum')->user()->hasRole('admin') && !auth('sanctum')->user()->hasRole('dev'))) {
-            $query->where('is_validated', true);
+            $query->where('is_validated', true)->where('is_public', true);
         }
+
         return $query->latest()->get();
     }
 
@@ -26,6 +29,8 @@ class ProjetController extends Controller
             'description_en' => 'nullable|string',
             'link' => 'nullable|url',
             'image' => 'nullable|string',
+            'chef_projet_id' => 'required|exists:users,id',
+            'is_public' => 'boolean',
         ]);
 
         $validated['dev_id'] = auth()->id();
@@ -47,6 +52,8 @@ class ProjetController extends Controller
             'description_en' => 'nullable|string',
             'link' => 'nullable|url',
             'image' => 'nullable|string',
+            'chef_projet_id' => 'sometimes|exists:users,id',
+            'is_public' => 'boolean',
         ]);
 
         $projet->update($validated);
