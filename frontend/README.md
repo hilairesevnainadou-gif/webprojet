@@ -169,4 +169,3 @@ npm run dev
 * Respecter la connexion API existante (`src/services/api.js`)
 * Créer de nouvelles permissions côté backend si un nouveau rôle est ajouté
 * Tests unitaires avec **React Testing Library** (facultatif)
-
