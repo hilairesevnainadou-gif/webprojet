@@ -1,0 +1,65 @@
+<?php
+
+namespace App\Http\Controllers\API;
+
+use App\Http\Controllers\Controller;
+use App\Models\Service;
+use Illuminate\Http\Request;
+
+class ServiceController extends Controller
+{
+    public function index()
+    {
+        $query = Service::query();
+        if (!auth('sanctum')->check() || !auth('sanctum')->user()->hasRole('admin')) {
+            $query->where('is_validated', true);
+        }
+        return $query->get();
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'name_en' => 'nullable|string|max:255',
+            'description' => 'required|string',
+            'description_en' => 'nullable|string',
+            'price' => 'nullable|numeric',
+            'category' => 'nullable|string',
+        ]);
+
+        return Service::create($validated);
+    }
+
+    public function show(Service $service)
+    {
+        return $service;
+    }
+
+    public function update(Request $request, Service $service)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'name_en' => 'nullable|string|max:255',
+            'description' => 'required|string',
+            'description_en' => 'nullable|string',
+            'price' => 'nullable|numeric',
+            'category' => 'nullable|string',
+        ]);
+
+        $service->update($validated);
+        return $service;
+    }
+
+    public function destroy(Service $service)
+    {
+        $service->delete();
+        return response()->noContent();
+    }
+
+    public function validateContent(Service $service)
+    {
+        $service->update(['is_validated' => true]);
+        return $service;
+    }
+}
