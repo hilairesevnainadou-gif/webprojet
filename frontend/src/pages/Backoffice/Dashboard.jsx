@@ -5,7 +5,9 @@ import GestionDevis from "./GestionDevis";
 import GestionBlog from "./GestionBlog";
 import GestionProjets from "./GestionProjets";
 import GestionMarketplace from "./GestionMarketplace";
-import { LayoutDashboard, Settings, FileText, Briefcase, ShoppingBag, MessageSquare } from "lucide-react";
+import GestionSettings from "./GestionSettings";
+import GestionRolesPermissions from "./GestionRolesPermissions";
+import { LayoutDashboard, Settings, FileText, Briefcase, ShoppingBag, MessageSquare, Shield, Globe } from "lucide-react";
 
 const Dashboard = () => {
   const { hasRole } = useAuth();
@@ -18,6 +20,8 @@ const Dashboard = () => {
     { path: "blog", label: "Blog", icon: MessageSquare, roles: ["admin", "dev"] },
     { path: "projets", label: "Projets", icon: Briefcase, roles: ["admin", "dev"] },
     { path: "marketplace", label: "Marketplace", icon: ShoppingBag, roles: ["admin"] },
+    { path: "roles", label: "Rôles", icon: Shield, roles: ["admin"] },
+    { path: "settings", label: "Paramètres", icon: Globe, roles: ["admin"] },
   ];
 
   const filteredMenu = menuItems.filter(item => hasRole(item.roles));
@@ -73,6 +77,8 @@ const Dashboard = () => {
           <Route path="blog" element={<GestionBlog />} />
           <Route path="projets" element={<GestionProjets />} />
           <Route path="marketplace" element={<GestionMarketplace />} />
+          <Route path="roles" element={<GestionRolesPermissions />} />
+          <Route path="settings" element={<GestionSettings />} />
         </Routes>
       </main>
     </div>
