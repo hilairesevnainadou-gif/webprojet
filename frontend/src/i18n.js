@@ -14,7 +14,9 @@ const resources = {
       "login": "Connexion",
       "logout": "Déconnexion",
       "dashboard": "Tableau de bord",
-      "welcome": "Bienvenue sur NovaTech",
+      "welcome_at": "Innovez avec",
+      "home_description": "Nous créons des solutions logicielles sur mesure, du développement web à la cybersécurité. Donnez vie à vos projets numériques.",
+      "discover_services": "Découvrir nos services",
       "request_devis": "Demander un devis",
       "our_services": "Nos Services",
       "price_label": "Prix",
@@ -32,11 +34,13 @@ const resources = {
       "login": "Login",
       "logout": "Logout",
       "dashboard": "Dashboard",
-      "welcome": "Welcome to NovaTech",
+      "welcome_at": "Innovate with",
+      "home_description": "We create tailor-made software solutions, from web development to cybersecurity. Bring your digital projects to life.",
+      "discover_services": "Discover our services",
       "request_devis": "Request a quote",
       "our_services": "Our Services",
       "price_label": "Price",
-      "currency": "USD"
+      "currency": "XOF"
     }
   }
 };

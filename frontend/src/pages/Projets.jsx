@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
 import { ExternalLink } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const Projets = () => {
+  const { i18n } = useTranslation();
   const [projets, setProjets] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -23,8 +25,12 @@ const Projets = () => {
           <div key={projet.id} className="bg-white rounded-lg shadow-md border border-slate-200 overflow-hidden">
              {projet.image && <img src={projet.image} alt={projet.title} className="w-full h-40 object-cover" />}
              <div className="p-6">
-               <h2 className="text-xl font-bold mb-2">{projet.title}</h2>
-               <p className="text-slate-600 mb-4">{projet.description}</p>
+               <h2 className="text-xl font-bold mb-2">
+                 {i18n.language === 'en' && projet.title_en ? projet.title_en : projet.title}
+               </h2>
+               <p className="text-slate-600 mb-4">
+                 {i18n.language === 'en' && projet.description_en ? projet.description_en : projet.description}
+               </p>
                <div className="flex items-center justify-between">
                  <span className="text-sm text-slate-500">Par {projet.developer?.name}</span>
                  {projet.link && (

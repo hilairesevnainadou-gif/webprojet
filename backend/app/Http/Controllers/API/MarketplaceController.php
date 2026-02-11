@@ -17,7 +17,9 @@ class MarketplaceController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
+            'name_en' => 'nullable|string|max:255',
             'description' => 'required|string',
+            'description_en' => 'nullable|string',
             'price' => 'required|numeric',
             'image' => 'nullable|string',
         ]);
@@ -34,7 +36,9 @@ class MarketplaceController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
+            'name_en' => 'nullable|string|max:255',
             'description' => 'required|string',
+            'description_en' => 'nullable|string',
             'price' => 'required|numeric',
             'image' => 'nullable|string',
         ]);

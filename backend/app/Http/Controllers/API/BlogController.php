@@ -17,7 +17,9 @@ class BlogController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
+            'title_en' => 'nullable|string|max:255',
             'content' => 'required|string',
+            'content_en' => 'nullable|string',
             'status' => 'required|string|in:draft,published',
             'image' => 'nullable|string',
         ]);
@@ -36,7 +38,9 @@ class BlogController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
+            'title_en' => 'nullable|string|max:255',
             'content' => 'required|string',
+            'content_en' => 'nullable|string',
             'status' => 'required|string|in:draft,published',
             'image' => 'nullable|string',
         ]);

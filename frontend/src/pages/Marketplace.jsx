@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
 import { ShoppingCart } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const Marketplace = () => {
+  const { t, i18n } = useTranslation();
   const [produits, setProduits] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -27,10 +29,14 @@ const Marketplace = () => {
               <div className="w-full h-48 bg-slate-100 flex items-center justify-center text-slate-400">Image non disponible</div>
             )}
             <div className="p-4 flex-grow flex flex-col">
-              <h2 className="text-lg font-bold mb-1">{p.name}</h2>
-              <p className="text-sm text-slate-600 mb-4 flex-grow">{p.description}</p>
+              <h2 className="text-lg font-bold mb-1">
+                {i18n.language === 'en' && p.name_en ? p.name_en : p.name}
+              </h2>
+              <p className="text-sm text-slate-600 mb-4 flex-grow">
+                {i18n.language === 'en' && p.description_en ? p.description_en : p.description}
+              </p>
               <div className="flex items-center justify-between mt-auto">
-                <span className="text-xl font-bold text-blue-600">{p.price} €</span>
+                <span className="text-xl font-bold text-blue-600">{p.price} {t('currency')}</span>
                 <button className="bg-blue-600 text-white p-2 rounded-full hover:bg-blue-700 transition">
                   <ShoppingCart size={20} />
                 </button>

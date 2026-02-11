@@ -2,26 +2,28 @@ import { Link } from "react-router-dom";
 import { ArrowRight, Code, Globe, Shield } from "lucide-react";
 
 import { useAuth } from "../context/AuthContext";
+import { useTranslation } from "react-i18next";
 
 const Home = () => {
   const { settings } = useAuth();
+  const { t } = useTranslation();
   return (
     <div className="bg-white">
       <div className="relative isolate px-6 pt-14 lg:px-8">
         <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
           <div className="text-center">
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-              Innovez avec {settings.site_name}
+              {t('welcome_at')} {settings.site_name}
             </h1>
             <p className="mt-6 text-lg leading-8 text-gray-600">
-              Nous créons des solutions logicielles sur mesure, du développement web à la cybersécurité. Donnez vie à vos projets numériques.
+              {t('home_description')}
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
               <Link to="/services" className="rounded-md bg-blue-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
-                Découvrir nos services
+                {t('discover_services')}
               </Link>
               <Link to="/devis" className="text-sm font-semibold leading-6 text-gray-900 flex items-center">
-                Demander un devis <ArrowRight className="ml-2" size={16} />
+                {t('request_devis')} <ArrowRight className="ml-2" size={16} />
               </Link>
             </div>
           </div>
