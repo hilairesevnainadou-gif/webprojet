@@ -1,14 +1,17 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Code, Globe, Shield } from "lucide-react";
 
+import { useAuth } from "../context/AuthContext";
+
 const Home = () => {
+  const { settings } = useAuth();
   return (
     <div className="bg-white">
       <div className="relative isolate px-6 pt-14 lg:px-8">
         <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
           <div className="text-center">
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-              Innovez avec NovaTech
+              Innovez avec {settings.site_name}
             </h1>
             <p className="mt-6 text-lg leading-8 text-gray-600">
               Nous créons des solutions logicielles sur mesure, du développement web à la cybersécurité. Donnez vie à vos projets numériques.

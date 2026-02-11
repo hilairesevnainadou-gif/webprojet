@@ -6,10 +6,12 @@ use App\Http\Controllers\API\DevisController;
 use App\Http\Controllers\API\BlogController;
 use App\Http\Controllers\API\ProjetController;
 use App\Http\Controllers\API\MarketplaceController;
+use App\Http\Controllers\API\SettingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 // Public Routes
+Route::get('/settings', [SettingController::class, 'index']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 
@@ -34,6 +36,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Admin Only
     Route::middleware('role:admin')->group(function () {
+        Route::post('/settings', [SettingController::class, 'update']);
         Route::apiResource('services', ServiceController::class)->except(['index', 'show']);
         Route::apiResource('devis', DevisController::class)->except(['store']);
         Route::apiResource('marketplace', MarketplaceController::class)->except(['index', 'show']);

@@ -5,9 +5,17 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [settings, setSettings] = useState({ site_name: "NovaTech", site_logo: "" });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Fetch settings
+    api.get("/settings").then(res => {
+      if (Object.keys(res.data).length > 0) {
+        setSettings(prev => ({ ...prev, ...res.data }));
+      }
+    });
+
     const token = localStorage.getItem("token");
     if (token) {
       api.get("/me")
@@ -47,7 +55,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout, hasRole }}>
+    <AuthContext.Provider value={{ user, settings, loading, login, logout, hasRole }}>
       {children}
     </AuthContext.Provider>
   );
