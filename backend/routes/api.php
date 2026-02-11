@@ -11,6 +11,8 @@ use App\Http\Controllers\API\StatsController;
 use App\Http\Controllers\API\UserController;
 use Illuminate\Support\Facades\Route;
 
+Route::options('/{any}', fn () => response()->noContent())->where('any', '.*');
+
 Route::get('/test', fn () => ['message' => 'NovaTech API']);
 
 Route::post('/auth/login', [AuthController::class, 'login']);
