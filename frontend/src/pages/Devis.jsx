@@ -1,14 +1,17 @@
 import { useState, useEffect } from "react";
 import api from "../services/api";
 import { useAuth } from "../context/AuthContext";
+import { useTranslation } from "react-i18next";
 
 const Devis = () => {
   const { user } = useAuth();
+  const { t } = useTranslation();
   const [services, setServices] = useState([]);
   const [formData, setFormData] = useState({
     name: user?.name || "",
     email: user?.email || "",
     service_id: "",
+    budget: "",
     message: ""
   });
   const [sent, setSent] = useState(false);
@@ -23,7 +26,7 @@ const Devis = () => {
     try {
       await api.post("/devis", formData);
       setSent(true);
-      setFormData({ ...formData, message: "" });
+      setFormData({ ...formData, message: "", budget: "" });
     } catch (err) {
       setError("Une erreur est survenue.");
     }
@@ -31,7 +34,7 @@ const Devis = () => {
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-12">
-      <h1 className="text-3xl font-bold mb-8 text-center">Demander un Devis</h1>
+      <h1 className="text-3xl font-bold mb-8 text-center">{t('request_devis')}</h1>
 
       {sent ? (
         <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
@@ -40,38 +43,51 @@ const Devis = () => {
       ) : (
         <form onSubmit={handleSubmit} className="space-y-6 bg-white p-8 rounded-lg shadow-md">
           {error && <div className="text-red-600">{error}</div>}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Nom complet</label>
-            <input
-              type="text"
-              required
-              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
-              value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            />
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+                <label className="block text-sm font-medium text-gray-700">Nom complet</label>
+                <input
+                type="text"
+                required
+                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                />
+            </div>
+            <div>
+                <label className="block text-sm font-medium text-gray-700">Email</label>
+                <input
+                type="email"
+                required
+                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                />
+            </div>
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Email</label>
-            <input
-              type="email"
-              required
-              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
-              value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Service concerné</label>
-            <select
-              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
-              value={formData.service_id}
-              onChange={(e) => setFormData({ ...formData, service_id: e.target.value })}
-            >
-              <option value="">Sélectionnez un service (optionnel)</option>
-              {services.map(s => (
-                <option key={s.id} value={s.id}>{s.name}</option>
-              ))}
-            </select>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+                <label className="block text-sm font-medium text-gray-700">{t('services')}</label>
+                <select
+                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                value={formData.service_id}
+                onChange={(e) => setFormData({ ...formData, service_id: e.target.value })}
+                >
+                <option value="">Sélectionnez un service</option>
+                {services.map(s => (
+                    <option key={s.id} value={s.id}>{s.name}</option>
+                ))}
+                </select>
+            </div>
+            <div>
+                <label className="block text-sm font-medium text-gray-700">Budget estimé ({t('currency')})</label>
+                <input
+                type="number"
+                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                value={formData.budget}
+                onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
+                />
+            </div>
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">Message / Détails du projet</label>

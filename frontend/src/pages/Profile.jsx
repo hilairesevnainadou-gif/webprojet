@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import api from "../services/api";
+import { useTranslation } from "react-i18next";
 
 const Profile = () => {
   const { user } = useAuth();
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     name: user?.name || "",
     email: user?.email || "",
@@ -16,7 +18,7 @@ const Profile = () => {
     e.preventDefault();
     try {
       await api.put("/profile", formData);
-      setMessage("Profil mis à jour !");
+      setMessage(t('save'));
       setTimeout(() => setMessage(""), 3000);
     } catch (err) {
       console.error(err);
@@ -25,12 +27,12 @@ const Profile = () => {
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-12">
-      <h1 className="text-3xl font-bold mb-8">Mon Profil</h1>
+      <h1 className="text-3xl font-bold mb-8">{t('profile')}</h1>
       {message && <div className="bg-green-100 text-green-700 p-3 rounded mb-4">{message}</div>}
 
       <form onSubmit={handleSubmit} className="space-y-6 bg-white p-8 rounded-lg shadow-md border border-slate-200">
         <div>
-          <label className="block text-sm font-medium text-gray-700">Nom</label>
+          <label className="block text-sm font-medium text-gray-700">{t('name_fr')}</label>
           <input
             type="text"
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
@@ -68,7 +70,7 @@ const Profile = () => {
           />
         </div>
         <button type="submit" className="w-full bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 font-bold">
-          Enregistrer
+          {t('save')}
         </button>
       </form>
     </div>

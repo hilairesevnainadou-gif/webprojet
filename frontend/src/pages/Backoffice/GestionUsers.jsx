@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import api from "../../services/api";
-import { Plus, Edit, Trash2, User as UserIcon } from "lucide-react";
+import { Plus, Edit, Trash2, User as UserIcon, Key } from "lucide-react";
 
 const GestionUsers = () => {
   const [users, setUsers] = useState([]);
@@ -78,7 +78,13 @@ const GestionUsers = () => {
                     {user.role?.name}
                   </span>
                 </td>
-                <td className="px-6 py-4 text-right space-x-2">
+                <td className="px-6 py-4 text-right space-x-2 flex justify-end">
+                  <button title="Réinitialiser mot de passe" onClick={async () => {
+                    if (window.confirm("Envoyer un mail de réinitialisation ?")) {
+                      await api.post(`/users/${user.id}/reset-password`);
+                      alert("Mail envoyé.");
+                    }
+                  }} className="text-orange-600"><Key size={18} /></button>
                   <button onClick={() => {
                     setFormData({ name: user.name, email: user.email, password: "", role_id: user.role_id });
                     setEditingId(user.id);

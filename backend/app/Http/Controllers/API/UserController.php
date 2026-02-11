@@ -63,4 +63,16 @@ class UserController extends Controller
         $user->delete();
         return response()->noContent();
     }
+
+    public function requestPasswordReset(User $user)
+    {
+        $user->update([
+            'invitation_token' => \Illuminate\Support\Str::random(40),
+            'is_active' => false, // Deactivate account until password is set?
+        ]);
+
+        // Mail::to($user->email)->send(new \App\Mail\UserInvitation($user));
+
+        return response()->json(['message' => 'Lien de réinitialisation envoyé.']);
+    }
 }

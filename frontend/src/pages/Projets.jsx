@@ -4,7 +4,7 @@ import { ExternalLink } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 const Projets = () => {
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   const [projets, setProjets] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -19,7 +19,7 @@ const Projets = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-12">
-      <h1 className="text-3xl font-bold mb-8">Projets Développeurs</h1>
+      <h1 className="text-3xl font-bold mb-8">{t('projets')}</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {projets.length > 0 ? projets.map(projet => (
           <div key={projet.id} className="bg-white rounded-lg shadow-md border border-slate-200 overflow-hidden">
@@ -32,17 +32,24 @@ const Projets = () => {
                  {i18n.language === 'en' && projet.description_en ? projet.description_en : projet.description}
                </p>
                <div className="flex items-center justify-between">
-                 <span className="text-sm text-slate-500">Par {projet.developer?.name}</span>
+                 <div className="text-sm text-slate-500">
+                    <p>Dév: {projet.developer?.name}</p>
+                    <p className="text-xs italic">{t('chef_projet')}: {projet.chef_projet?.name}</p>
+                 </div>
                  {projet.link && (
                    <a href={projet.link} target="_blank" rel="noopener noreferrer" className="flex items-center text-blue-600 hover:underline">
                      Voir le projet <ExternalLink size={14} className="ml-1" />
                    </a>
                  )}
                </div>
+               <div className="mt-4 pt-4 border-t flex justify-between text-xs font-bold uppercase text-slate-400">
+                    <span>{t(projet.status)}</span>
+                    <span>{t(projet.nature)}</span>
+               </div>
              </div>
           </div>
         )) : (
-            <p>Aucun projet partagé pour le moment.</p>
+            <p>Aucun projet public disponible pour le moment.</p>
         )}
       </div>
     </div>

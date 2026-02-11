@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Devis extends Model
 {
-    protected $fillable = ['user_id', 'name', 'email', 'service_id', 'message', 'status'];
+    protected $fillable = ['user_id', 'name', 'email', 'service_id', 'message', 'status', 'budget'];
 
     public function user()
     {

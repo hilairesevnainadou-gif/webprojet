@@ -9,7 +9,7 @@ class Projet extends Model
     protected $fillable = [
         'title', 'title_en', 'description', 'description_en',
         'dev_id', 'chef_projet_id', 'link', 'image',
-        'is_validated', 'is_public'
+        'is_validated', 'status', 'nature', 'is_visible_publicly'
     ];
 
     public function developer()

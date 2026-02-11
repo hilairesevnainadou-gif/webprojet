@@ -12,9 +12,9 @@ class ProjetController extends Controller
     {
         $query = Projet::with(['developer', 'chefProjet']);
 
-        // Non-auth users or non-staff only see validated AND public projects
+        // Public site only shows validated AND explicitly public projects
         if (!auth('sanctum')->check() || (!auth('sanctum')->user()->hasRole('admin') && !auth('sanctum')->user()->hasRole('dev'))) {
-            $query->where('is_validated', true)->where('is_public', true);
+            $query->where('is_validated', true)->where('is_visible_publicly', true);
         }
 
         return $query->latest()->get();
@@ -30,8 +30,15 @@ class ProjetController extends Controller
             'link' => 'nullable|url',
             'image' => 'nullable|string',
             'chef_projet_id' => 'required|exists:users,id',
-            'is_public' => 'boolean',
+            'status' => 'required|in:ongoing,development,production',
+            'nature' => 'required|in:private,public',
+            'is_visible_publicly' => 'boolean',
         ]);
+
+        // Constraint: Private nature projects cannot be visible publicly
+        if ($validated['nature'] === 'private') {
+            $validated['is_visible_publicly'] = false;
+        }
 
         $validated['dev_id'] = auth()->id();
 
@@ -46,15 +53,23 @@ class ProjetController extends Controller
     public function update(Request $request, Projet $projet)
     {
         $validated = $request->validate([
-            'title' => 'required|string|max:255',
+            'title' => 'sometimes|required|string|max:255',
             'title_en' => 'nullable|string|max:255',
-            'description' => 'required|string',
+            'description' => 'sometimes|required|string',
             'description_en' => 'nullable|string',
             'link' => 'nullable|url',
             'image' => 'nullable|string',
             'chef_projet_id' => 'sometimes|exists:users,id',
-            'is_public' => 'boolean',
+            'status' => 'sometimes|in:ongoing,development,production',
+            'nature' => 'sometimes|in:private,public',
+            'is_visible_publicly' => 'boolean',
         ]);
+
+        if (isset($validated['nature']) && $validated['nature'] === 'private') {
+            $validated['is_visible_publicly'] = false;
+        } elseif ($projet->nature === 'private' && isset($validated['is_visible_publicly'])) {
+             $validated['is_visible_publicly'] = false;
+        }
 
         $projet->update($validated);
         return $projet;

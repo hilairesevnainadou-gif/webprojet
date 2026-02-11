@@ -20,6 +20,7 @@ class DevisController extends Controller
             'email' => 'required|email|max:255',
             'service_id' => 'nullable|exists:services,id',
             'message' => 'required|string',
+            'budget' => 'nullable|numeric',
         ]);
 
         if (auth()->check()) {

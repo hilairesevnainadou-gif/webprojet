@@ -29,7 +29,7 @@ const Services = () => {
             <p className="text-slate-600 mb-4">
               {i18n.language === 'en' && service.description_en ? service.description_en : service.description}
             </p>
-            {service.price && <p className="text-blue-600 font-bold mb-4">{service.price} {t('currency')}</p>}
+            {service.price && <p className="text-blue-600 font-bold mb-4">{new Intl.NumberFormat().format(service.price)} {t('currency')}</p>}
             <Link to="/devis" className="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
               {t('request_devis')}
             </Link>

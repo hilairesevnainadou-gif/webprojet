@@ -48,6 +48,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/blog/{blog}/validate', [BlogController::class, 'validateContent']);
         Route::post('/projets/{projet}/validate', [ProjetController::class, 'validateContent']);
         Route::post('/marketplace/{marketplace}/validate', [MarketplaceController::class, 'validateContent']);
+        Route::post('/users/{user}/reset-password', [UserController::class, 'requestPasswordReset']);
         Route::apiResource('users', UserController::class);
         Route::apiResource('roles', RoleController::class);
         Route::apiResource('permissions', PermissionController::class);
