@@ -5,7 +5,7 @@ import { Plus, Trash2, Edit } from "lucide-react";
 const GestionBlog = () => {
   const [posts, setPosts] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [formData, setFormData] = useState({ title: "", content: "", status: "draft", image: "" });
+  const [formData, setFormData] = useState({ title: "", title_en: "", content: "", content_en: "", status: "draft", image: "" });
   const [editingId, setEditingId] = useState(null);
 
   const fetchPosts = () => api.get("/blog").then(res => setPosts(res.data));
@@ -22,7 +22,7 @@ const GestionBlog = () => {
       await api.post("/blog", formData);
     }
     setShowModal(false);
-    setFormData({ title: "", content: "", status: "draft", image: "" });
+    setFormData({ title: "", title_en: "", content: "", content_en: "", status: "draft", image: "" });
     setEditingId(null);
     fetchPosts();
   };
@@ -84,8 +84,12 @@ const GestionBlog = () => {
           <div className="bg-white rounded-lg p-6 max-w-2xl w-full">
             <h3 className="text-lg font-bold mb-4">{editingId ? "Modifier" : "Ajouter"} un Article</h3>
             <form onSubmit={handleSubmit} className="space-y-4">
-              <input type="text" placeholder="Titre" required className="w-full border p-2 rounded" value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} />
-              <textarea placeholder="Contenu" required rows={8} className="w-full border p-2 rounded" value={formData.content} onChange={e => setFormData({...formData, content: e.target.value})} />
+              <div className="grid grid-cols-2 gap-4">
+                <input type="text" placeholder="Titre (FR)" required className="border p-2 rounded" value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} />
+                <input type="text" placeholder="Titre (EN)" className="border p-2 rounded" value={formData.title_en} onChange={e => setFormData({...formData, title_en: e.target.value})} />
+              </div>
+              <textarea placeholder="Contenu (FR)" required rows={6} className="w-full border p-2 rounded" value={formData.content} onChange={e => setFormData({...formData, content: e.target.value})} />
+              <textarea placeholder="Contenu (EN)" rows={6} className="w-full border p-2 rounded" value={formData.content_en} onChange={e => setFormData({...formData, content_en: e.target.value})} />
               <div className="flex space-x-4">
                 <select className="flex-1 border p-2 rounded" value={formData.status} onChange={e => setFormData({...formData, status: e.target.value})}>
                   <option value="draft">Brouillon</option>

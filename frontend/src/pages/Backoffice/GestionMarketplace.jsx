@@ -5,7 +5,7 @@ import { Plus, Trash2, Edit } from "lucide-react";
 const GestionMarketplace = () => {
   const [produits, setProduits] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [formData, setFormData] = useState({ name: "", description: "", price: "", image: "" });
+  const [formData, setFormData] = useState({ name: "", name_en: "", description: "", description_en: "", price: "", image: "" });
   const [editingId, setEditingId] = useState(null);
 
   const fetchProduits = () => api.get("/marketplace").then(res => setProduits(res.data));
@@ -22,7 +22,7 @@ const GestionMarketplace = () => {
       await api.post("/marketplace", formData);
     }
     setShowModal(false);
-    setFormData({ name: "", description: "", price: "", image: "" });
+    setFormData({ name: "", name_en: "", description: "", description_en: "", price: "", image: "" });
     setEditingId(null);
     fetchProduits();
   };
@@ -78,9 +78,13 @@ const GestionMarketplace = () => {
           <div className="bg-white rounded-lg p-6 max-w-md w-full">
             <h3 className="text-lg font-bold mb-4">{editingId ? "Modifier" : "Ajouter"} un Produit</h3>
             <form onSubmit={handleSubmit} className="space-y-4">
-              <input type="text" placeholder="Nom" required className="w-full border p-2 rounded" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} />
-              <textarea placeholder="Description" required className="w-full border p-2 rounded" value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})} />
-              <input type="number" placeholder="Prix" required className="w-full border p-2 rounded" value={formData.price} onChange={e => setFormData({...formData, price: e.target.value})} />
+              <div className="grid grid-cols-2 gap-4">
+                <input type="text" placeholder="Nom (FR)" required className="border p-2 rounded" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} />
+                <input type="text" placeholder="Nom (EN)" className="border p-2 rounded" value={formData.name_en} onChange={e => setFormData({...formData, name_en: e.target.value})} />
+              </div>
+              <textarea placeholder="Description (FR)" required className="w-full border p-2 rounded" value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})} />
+              <textarea placeholder="Description (EN)" className="w-full border p-2 rounded" value={formData.description_en} onChange={e => setFormData({...formData, description_en: e.target.value})} />
+              <input type="number" placeholder="Prix (XOF)" required className="w-full border p-2 rounded" value={formData.price} onChange={e => setFormData({...formData, price: e.target.value})} />
               <input type="text" placeholder="URL Image" className="w-full border p-2 rounded" value={formData.image} onChange={e => setFormData({...formData, image: e.target.value})} />
               <div className="flex justify-end space-x-2">
                 <button type="button" onClick={() => setShowModal(false)} className="px-4 py-2 border rounded">Annuler</button>

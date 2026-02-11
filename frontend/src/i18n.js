@@ -47,7 +47,10 @@ const resources = {
       "content_fr": "Contenu (FR)",
       "content_en": "Contenu (EN)",
       "chef_projet": "Chef de Projet",
-      "visibility": "Visibilité"
+      "visibility": "Visibilité",
+      "todo": "À faire",
+      "in_progress": "En cours",
+      "done": "Terminé"
     }
   },
   en: {
@@ -94,7 +97,10 @@ const resources = {
       "content_fr": "Content (FR)",
       "content_en": "Content (EN)",
       "chef_projet": "Project Manager",
-      "visibility": "Visibility"
+      "visibility": "Visibility",
+      "todo": "To do",
+      "in_progress": "In progress",
+      "done": "Done"
     }
   }
 };

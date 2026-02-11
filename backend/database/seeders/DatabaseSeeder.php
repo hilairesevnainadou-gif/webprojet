@@ -16,6 +16,8 @@ class DatabaseSeeder extends Seeder
         // Settings
         Setting::create(['key' => 'site_name', 'value' => 'NovaTech']);
         Setting::create(['key' => 'site_logo', 'value' => '']); // URL or base64
+        Setting::create(['key' => 'site_description', 'value' => 'Solutions numériques innovantes pour votre entreprise.']);
+        Setting::create(['key' => 'portfolio_intro', 'value' => 'Nous créons des solutions logicielles sur mesure, du développement web à la cybersécurité. Donnez vie à vos projets numériques.']);
         Setting::create(['key' => 'rccm', 'value' => 'RCCM-CI-ABJ-01-2026-B12-12345']);
 
         // Permissions

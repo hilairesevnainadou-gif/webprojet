@@ -5,6 +5,8 @@ const GestionSettings = () => {
   const [settings, setSettings] = useState({
     site_name: "",
     site_logo: "",
+    site_description: "",
+    portfolio_intro: "",
     rccm: ""
   });
   const [message, setMessage] = useState("");
@@ -48,6 +50,23 @@ const GestionSettings = () => {
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
             value={settings.site_logo}
             onChange={(e) => setSettings({ ...settings, site_logo: e.target.value })}
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Description du site (Footer)</label>
+          <textarea
+            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+            value={settings.site_description}
+            onChange={(e) => setSettings({ ...settings, site_description: e.target.value })}
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700">Introduction Portfolio (Accueil)</label>
+          <textarea
+            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+            rows={4}
+            value={settings.portfolio_intro}
+            onChange={(e) => setSettings({ ...settings, portfolio_intro: e.target.value })}
           />
         </div>
         <div>

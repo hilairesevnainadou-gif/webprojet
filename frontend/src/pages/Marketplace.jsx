@@ -18,34 +18,49 @@ const Marketplace = () => {
   if (loading) return <div className="p-10 text-center">Chargement...</div>;
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-12">
-      <h1 className="text-3xl font-bold mb-8">Marketplace</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {produits.length > 0 ? produits.map(p => (
-          <div key={p.id} className="bg-white rounded-lg shadow-md border border-slate-200 overflow-hidden flex flex-col">
-            {p.image ? (
-              <img src={p.image} alt={p.name} className="w-full h-48 object-cover" />
-            ) : (
-              <div className="w-full h-48 bg-slate-100 flex items-center justify-center text-slate-400">Image non disponible</div>
-            )}
-            <div className="p-4 flex-grow flex flex-col">
-              <h2 className="text-lg font-bold mb-1">
-                {i18n.language === 'en' && p.name_en ? p.name_en : p.name}
-              </h2>
-              <p className="text-sm text-slate-600 mb-4 flex-grow">
-                {i18n.language === 'en' && p.description_en ? p.description_en : p.description}
-              </p>
-              <div className="flex items-center justify-between mt-auto">
-                <span className="text-xl font-bold text-blue-600">{p.price} {t('currency')}</span>
-                <button className="bg-blue-600 text-white p-2 rounded-full hover:bg-blue-700 transition">
-                  <ShoppingCart size={20} />
-                </button>
-              </div>
+    <div className="bg-slate-50 min-h-screen py-16">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="mb-16 flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <h1 className="text-4xl font-extrabold text-slate-900 tracking-tight">{t('marketplace')}</h1>
+            <div className="flex bg-white p-1 rounded-xl shadow-sm border border-slate-200">
+                <button className="px-6 py-2 bg-blue-600 text-white rounded-lg font-bold text-sm">Tous les produits</button>
+                <button className="px-6 py-2 text-slate-500 font-bold text-sm hover:text-blue-600 transition">Logiciels</button>
+                <button className="px-6 py-2 text-slate-500 font-bold text-sm hover:text-blue-600 transition">Design</button>
             </div>
-          </div>
-        )) : (
-            <p>La marketplace est vide pour le moment.</p>
-        )}
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            {produits.length > 0 ? produits.map(p => (
+                <div key={p.id} className="bg-white rounded-[2rem] shadow-sm hover:shadow-2xl transition-all duration-500 border border-slate-100 overflow-hidden flex flex-col group">
+                    <div className="relative h-64 overflow-hidden">
+                        <img
+                            src={p.image || "https://images.unsplash.com/photo-1558494949-ef010cbdcc51?auto=format&fit=crop&q=80&w=800"}
+                            alt={p.name}
+                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                        />
+                        <div className="absolute top-4 left-4">
+                            <span className="bg-blue-600 text-white text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full shadow-lg">Premium</span>
+                        </div>
+                    </div>
+                    <div className="p-8 flex-grow flex flex-col">
+                        <h2 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-blue-600 transition-colors">
+                            {i18n.language === 'en' && p.name_en ? p.name_en : p.name}
+                        </h2>
+                        <p className="text-sm text-slate-500 mb-8 flex-grow leading-relaxed">
+                            {i18n.language === 'en' && p.description_en ? p.description_en : p.description}
+                        </p>
+                        <div className="flex items-center justify-between pt-6 border-t border-slate-50">
+                            <span className="text-2xl font-black text-slate-900">{new Intl.NumberFormat().format(p.price)} <span className="text-xs text-slate-400 uppercase">{t('currency')}</span></span>
+                            <button className="w-12 h-12 bg-slate-900 text-white rounded-2xl flex items-center justify-center hover:bg-blue-600 transition shadow-xl group-hover:-translate-y-1">
+                                <ShoppingCart size={20} />
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )) : (
+                <p className="col-span-full text-center text-slate-500 italic">La marketplace est vide pour le moment.</p>
+            )}
+        </div>
       </div>
     </div>
   );
